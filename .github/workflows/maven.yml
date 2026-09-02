@@ -20,11 +20,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-        env:
-          # Remplacez ces clés par vos variables réelles ou par des Secrets GitHub
-          SPRING_DATASOURCE_URL: ${{ secrets.AIVEN_SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.AIVEN_SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.AIVEN_SPRING_DATASOURCE_PASSWORD }}
