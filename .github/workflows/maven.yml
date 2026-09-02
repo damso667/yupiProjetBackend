@@ -1,9 +1,7 @@
-name: Java CI with Maven & Deploy to Render
+name: Java CI with Maven & Auto-Deploy
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "main" ]
 
 jobs:
@@ -20,5 +18,12 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      # Compilation sans exécuter les tests d'intégration locaux
       - name: Build with Maven
         run: mvn -B package -DskipTests --file pom.xml
+
+      # Envoi d'une requête HTTP à Render pour déclencher le build & déploiement
+      - name: Trigger Render Deploy
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
